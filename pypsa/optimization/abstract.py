@@ -257,6 +257,14 @@ class OptimizationAbstractMixin(OptimizationAbstractMGAMixin):
         """
         n = self._n
 
+        # See https://github.com/PyPSA/PyPSA/issues/1975
+        if n.has_scenarios:
+            msg = (
+                "optimize_transmission_expansion_iteratively does not support "
+                "networks with scenarios (stochastic networks) yet."
+            )
+            raise NotImplementedError(msg)
+
         n.c.lines.static["carrier"] = n.c.lines.static.bus0.map(
             n.c.buses.static.carrier
         )
